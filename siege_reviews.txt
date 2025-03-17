@@ -1,0 +1,76 @@
+AutoReview: {
+    'Summary': 'The paper presents TEMPEST, a novel multi-turn adversarial framework that employs a breadth-first tree search strategy combined with a partial compliance metric to gradually erode the safety protections of large language models. It demonstrates its effectiveness on the JailbreakBench dataset by achieving high success rates with fewer queries compared to existing baselines, thus providing new insights into multi-turn attack methodologies in LLM safety evaluations.', 
+    'Strengths': [
+        'Introduces an innovative multi-turn adversarial strategy leveraging a BFS tree search to systematically explore adversarial prompts.',
+        'Uses a novel partial compliance metric to capture incremental breaches in LLM safety, an approach that is well-motivated by real-world multi-turn interactions.', '
+        Presents thorough experimental evaluations with comparisons to established baselines, clearly showing improved query efficiency and success rates.', 
+        'Includes detailed pseudocode and methodology explanations, aiding reproducibility and clarity.', 
+        'Addresses an important aspect of LLM safety that has been less explored in single-turn attack studies.'
+        ], 
+    'Weaknesses': [
+        'The sensitivity of the partial compliance metric and branching parameters is not fully analyzed, raising questions about robustness and reproducibility.', 
+        'Limited discussion on potential ethical implications and safeguards, which is essential given the dual-use nature of the proposed framework.', 
+        'Reliance on a single dataset (JailbreakBench) may limit insights into generalizability across diverse adversarial scenarios.', 
+        'Additional ablation studies exploring different red teaming strategies and parameter choices could further strengthen the evaluation.'
+        ], 
+    'Originality': 3, 
+    'Quality': 3, 
+    'Clarity': 3, 
+    'Significance': 4, 
+    'Questions': [
+        'Can the authors provide additional sensitivity analyses to understand the impact of key hyperparameters such as branching factors, pruning thresholds, and the calibration of the partial compliance metric?', 
+        'What measures can be taken to mitigate potential misuse of the TEMPEST framework, and are there any countermeasures that can be integrated into LLM safety systems?', 
+        'Would evaluating the approach on additional datasets or adversarial scenarios provide more insights into its generalizability?', 
+        'Could more extensive ablation studies be conducted to assess variations in the attacker LLM’s prompting strategy and explore alternative search methods (e.g., depth-first or hybrid approaches)?'
+        ], 
+    'Limitations': [
+        "The evaluation is primarily based on the JailbreakBench dataset, leaving uncertainty about the framework's generalizability across other settings.", 
+        'The use of a heuristic partial compliance metric which might be sensitive to parameter changes is not deeply explored.', 
+        'There is a limited discussion on the dual-use concerns and potential ethical risks associated with enabling such powerful multi-turn adversarial attacks.'
+        ], 
+        'Ethical Concerns': False, 
+        'Soundness': 3, 
+        'Presentation': 3, 
+        'Contribution': 3, 
+        'Overall': 8, 
+        'Confidence': 5, 
+        'Decision': 'Accept'
+}
+
+---
+
+Reviewer 1: 
+
+Review:
+The paper introduces a method for jailbreaking LLMs (i.e., making them generate potentially harmful outputs that have been discouraged during the alignment process). The approach is based on multi-turn conversations, where each turn is encoded as a node in a tree. It employs breadth-first tree search to obtain the requested, though forbidden, response. Nodes that elicit partial compliance from the model are considered promising and are used as starting points for the next conversation turn. The method outperforms other jailbreaking baselines while requiring fewer queries to the model.
+
+Positive Aspects:
+Effective, intuitive, and reasonably simple method for jailbreaking LLMs.
+Clear explanation of the method.
+Comparison to several baselines, with the proposed method demonstrating clear superiority.
+
+Negative Aspects:
+The paper lacks sufficient experimental details to ensure reproducibility. For example, what are the exact prompts used for the attacker LLM?
+The partial compliance function 
+ appears to be a crucial component of the method, but the paper does not explain how compliance is measured in practice.
+
+Additional Comment:
+Why is the method called "TEMPEST"? The capitalization suggests that it is an acronym, but this is never explained. Simply naming a method for the sake of branding feels like a marketing trick, which, in my view, is not appropriate for a research paper.
+
+Rating: 7: Good paper, accept
+Confidence: 4: The reviewer is confident but not absolutely certain that the evaluation is correct
+
+---
+
+Reviewer 2:
+
+Review:
+This paper presents a compelling examination of a critical flaw in AI safety—while many models perform well on single-turn safety tests, they often fail under multi-turn adversarial conditions. 
+Through rigorous experimentation, the study demonstrates that its proposed approach is significantly more effective than prior methods, necessitating a reassessment of existing AI defense strategies. 
+By highlighting the insufficiency of current safety measures, the paper makes a strong case for incorporating multi-turn adversarial testing into standard evaluation frameworks. 
+Moreover, while the study primarily focuses on exploiting AI vulnerabilities, its methodology could also be leveraged to enhance AI security by enabling models to “remember” previous interactions rather than treating each prompt in isolation. 
+Additionally, further evaluation on diverse datasets beyond JailbreakBench, including real-world adversarial prompts, could strengthen the findings’ generalizability. 
+Finally, the partial compliance metric introduced in the paper is a valuable contribution, but a more detailed explanation of how intermediate compliance levels (1–9) are assigned—beyond the clear-cut cases of full refusal (0) and complete compliance (10)—would enhance clarity and reproducibility.
+
+Rating: 7: Good paper, accept
+Confidence: 3: The reviewer is fairly confident that the evaluation is correct

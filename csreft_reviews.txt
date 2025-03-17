@@ -1,0 +1,114 @@
+AutoReview: {
+    'Summary': 'The paper introduces Compositional Subspace Representation Fine-tuning (CS-ReFT), a novel approach for adapting large language models by editing hidden-state representations instead of direct weight modifications. The method learns multiple low-rank, orthonormal subspace transformations—each targeting a specific skill—and employs a lightweight router to dynamically compose these transformations in order to mitigate cross-task interference. Experiments on the AlpacaEval benchmark using Llama-2-7B show that CS-ReFT, while updating only 0.0098% of parameters, achieves a high win rate and outperforms several baseline methods.', 
+    'Strengths': [
+        'Proposes a novel representation-level adaptation method that reframes the tuning process by editing hidden states using multiple low-rank subspace transformations.', 
+        'Employs a dynamic router to efficiently compose specialized subspace edits, which helps in mitigating cross-task interference.', 
+        'Achieves impressive empirical performance with extremely high parameter efficiency, as demonstrated on the AlpacaEval benchmark.', 
+        'Provides clear comparisons with both weight-based and representation-based parameter-efficient fine-tuning approaches.'
+    ], 
+    'Weaknesses': [
+        'The empirical evaluation is limited to a single benchmark (AlpacaEval) and one model size, raising concerns about the generality and robustness of the method.', 
+        'There is insufficient analysis and ablation of the router mechanism, including its sensitivity to gating thresholds and the precise role in performance improvements.', 
+        'More details are needed concerning training stability, hyperparameter choices (such as the rank of subspaces), and the enforcement of orthonormal constraints.', 
+        'The paper would benefit from exploring the scalability of the approach to a broader range of tasks or model sizes.'
+    ], 
+    'Originality': 3, 
+    'Quality': 3, 
+    'Clarity': 3, 
+    'Significance': 3, 
+    'Questions': [
+        'Can the authors provide additional ablation studies on the router mechanism, particularly its sensitivity to gating thresholds and its architectural design?', 
+        'How does CS-ReFT perform on other benchmarks or with models of different sizes to support its generality and scalability?', 
+        'Could the authors elaborate on the training dynamics, including enforcement of the orthonormal constraints and selection of hyperparameters such as the rank of subspaces?', 
+        'Is the partitioning of skills (i.e., assignment of subspaces) conducted manually or learned implicitly during training, and what are the implications of each approach?'
+    ], 
+    'Limitations': [
+        'The evaluation is primarily limited to AlpacaEval, restricting insights on the method's performance across diverse tasks or settings.', 
+        'There is a lack of extensive ablation studies to analyze the impact of specific design choices, which is important for assessing reproducibility and practical deployment.', 
+        'Potential challenges in scaling the approach to a larger number of tasks or adapting to different model architectures are not thoroughly explored.'
+    ], 
+    'Ethical Concerns': False, 
+    'Soundness': 3, 
+    'Presentation': 3, 
+    'Contribution': 3, 
+    'Overall': 8, 
+    'Confidence': 4, 
+    'Decision': 'Accept'
+}
+
+---
+
+Reviewer 1:
+
+Review:
+Thanks for submitting your work to our workshop. Developing a fine-tuning method that does not incur cross-task inference is an important problem, and the authors propose a clever idea using routers and subspace representation editing to solve the problem. 
+I like the way how the method keeps the impact independent for each task, which reminds me of using MoE instead of a dense model (i.e. using specialization).
+
+Pro.
+The authors propose a new fine-tuning method that minimizes cross-task inference using routers and subspace representation editing.
+The paper clearly explains why how this work is different from the existing methods.
+From their evaluation, their method shows higher win-rate while maintaining small PE.
+
+Cons.
+Could you share what would be the limitations / future directions for this work?
+It is unclear what is inference-time overhead for this method.
+It is unclear how this method would work with large models. Have you also tested this method on the larger models? If the model doesn't fit into a single GPU, it has to be deployed on multi-gpus or use cpu-offloading-based method. 
+What would be the performance implication for those cases compared to the existing fine-tuning methods?
+
+Rating: 6: Marginally above acceptance threshold
+Confidence: 3: The reviewer is fairly confident that the evaluation is correct
+
+---
+
+Reviewer 2:
+
+Review:
+Strength: The paper addresses a critical limitation of ReFT, i.e., cross-task interference for multi-task adaptation, by proposing CS-ReFT with orthonormal compositional sub-spaces and dynamic routing between them. The evaluation demonstrates strong performance on the AlpacaEval benchmark, surpassing earlier state-of-the-art methods.
+
+Weakness: Limited evaluations on diverse benchmarks/tasks, limited insights on cross-interference in ReFT and missing details about related works.
+
+Detailed comments:
+
+Weak motivation in the introduction: While the paper addresses cross-task interference, the introduction section mostly discusses cross-task interference in PEFT and comparison with PEFT. The paper only mentions that using a single global edit function limits ReFT's performance on multi-task settings. It does not explicitly justify the cross-task interference in ReFT. I would suggest adding more details on cross-task interference in ReFT and including comparison results against ReFT rather than only PEFT.
+
+The background and related work does not detail existing representation editing works. While ReFT is briefly discussed in the background, specific variations of representation editing work, like RED, LoReFT and DiReFT, are not discussed. Discussing these works and highlighting the differences would be helpful in clarifying CS-ReFT's contribution.
+
+Regarding the approach proposed by authors, are there any tradeoffs for dividing the representation into different tasks instead of using a single global representation? The evaluation does not isolate individual task performance, missing to analyze potential downsides. Evaluating whether improving one task (e.g. arithmetic) degrades another (e.g., sentiment analysis) would be insightful.
+
+The evaluation is performed only on AlpacaEval. Is there any specific reason for evaluating on this benchmark? Adding evaluation for multiple benchmarks may help determine the robustness of this approach and may provide some insights on the tradeoff between ReFT and CS-ReFT, as discussed in comment #4.
+
+Rating: 7: Good paper, accept
+Confidence: 3: The reviewer is fairly confident that the evaluation is correct
+
+---
+
+Reviewer 3:
+
+Review:
+Summary of the Paper
+This paper introduces compositional subspace representation fine-tuning (CS-ReFT), a novel method for adapting large language models to multiple tasks while minimizing cross-task interference. CS-ReFT learns orthonormal subspace transformations specialized for distinct skills and combines them using a router. By editing hidden-state representations instead of weight matrices, it more effectively mitigates conflicts between tasks. This approach presents a promising direction for efficient and high-quality multi-task instruction following.
+
+Strength
+The paper introduces an interesting approach to improving multi-task instruction following by integrating a router with representation-based fine-tuning.
+It includes comparisons with multiple state-of-the-art methods for enhancing parameter efficiency.
+
+Weakness
+In line 99, the authors state that when multiple tasks share a single subspace intervention, updates for one task can degrade. It would be helpful to elaborate on why cross-task interference leads to degradation, as this could clarify the motivation behind the approach. Could you provide more details on how R is updated in the equation on line 139? Wu et al. describe learning subspaces using DAS—are you following the same practice? How are you optimizing the subspace you found in the model? In the other word, how do you ensure that the input requiring task can be edited without altering? How do you handle the superposition in the subspace? (Elhage et al, 2022)
+The router mechanism appears to assume a linear composition of different tasks. Could you discuss whether it accounts for potential non-linear relationships between tasks?
+A discussion on the computational overhead and efficiency of the proposed method would strengthen the paper.
+
+Clarity
+The terms "representational level" and "hidden states" are used interchangeably, which may cause some confusion. For lines 118–119, could you clarify the distinction between "representation level" and "weight-based modules" inside Transformer layers? Are you indicating that prior approaches relying on orthogonality constructs operate at the weight level, whereas your method focuses on hidden states?
+In line 115, you mention that dynamic routing introduces overhead, yet your method also incorporates dynamic routing. Could you clarify how your approach differs in a way that helps mitigate cross-task interference while avoiding the overhead?
+The title in Table 1 appears to be separated.
+
+General Comments
+The paper is mostly well-written and motivated, but the clarity could be improved. The paper introduces a new method. I’d be happy to raise my score if the authors can address the questions I mentioned above.
+
+Reference
+[1] Wu, Zhengxuan, Aryaman Arora, Zheng Wang, Atticus Geiger, Dan Jurafsky, Christopher D. Manning, and Christopher Potts. "Reft: Representation finetuning for language models." Advances in Neural Information Processing Systems 37 (2025): 63908-63962.
+
+[2] Elhage, Nelson, Tristan Hume, Catherine Olsson, Nicholas Schiefer, Tom Henighan, Shauna Kravec, Zac Hatfield-Dodds et al. "Toy models of superposition." arXiv preprint arXiv:2209.10652 (2022).
+
+Rating: 6: Marginally above acceptance threshold
+Confidence: 3: The reviewer is fairly confident that the evaluation is correct
