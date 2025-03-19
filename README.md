@@ -150,26 +150,6 @@ python get_metrics.py <results_json>
 }
 ```
 
-Feel free to cite Zochi's work as well!
-
-```bibtex
-@article{csreft2025,
-  title={Compositional Subspace Representation Fine-tuning for Adaptive Large Language Models},
-  author={Andy Zhou},
-  journal={ArXiv},
-  volume={abs/2503.10617},
-  year={2025}
-}
-
-@article{siege2025,
-  title={Siege: Autonomous Multi-Turn Jailbreaking of Large Language Models with Tree Search},
-  author={Andy Zhou},
-  journal={ArXiv},
-  volume={abs/2503.10619},
-  year={2025}
-}
-```
-
 ## 7. License
 
 This repository is released under the MIT License. See the LICENSE file for more details.
