@@ -1,0 +1,162 @@
+Meta Reviewer
+
+Metareview: 
+The paper introduces TEMPEST, a multi-turn adversarial framework that employs a tree search approach to assess the safety of Large Language Models (LLMs) by exploring multiple conversation paths and tracking incremental policy breaches. By utilizing a cross-branch learning mechanism, TEMPEST efficiently identifies model vulnerabilities and demonstrates how small compliance concessions can accumulate into significant security failures. Evaluations show TEMPEST achieves 100% success rates on GPT-3.5-turbo and 97% on GPT-4, surpassing single-turn and existing multi-turn adversarial methods. This innovative methodology emphasizes the importance of simultaneous exploration in comprehensive safety testing of language models.
+
+Summary Of Reasons To Publish:
+All reviewers agreed that the tree search methodology represents a significant advancement by allowing multiple conversation paths to be explored simultaneously, rather than depending on a single dialogue thread.
+
+Reviewers appreciated the innovative ability of the framework to quantify incremental safety erosion and exploit minor policy breaches, which contributed to TEMPEST achieving an impressive success rate of 97-100% against the evaluated LLMs.
+
+Reviewers highlighted the paper's clear and fluent structure, noting that it is well-organized and logically detailed, particularly in the methodology section.
+
+The intriguing combination of minor concessions within the tree search context and the unique perspective in revealing security vulnerabilities of LLMs were also praised as distinctive aspects of the approach.
+
+Summary Of Suggested Revisions:
+Limitation of Model Evaluation: A reviewer wished authors had evaluated a broader range of models beyond just GPT-3.5-Turbo, GPT-4, and Llama-3.1-70B, noting the omission of important families like Claude, Gemini, and others, which limits the generalizability of the findings. Authors have conducted additional experiments on a more diverse set of models and will include these in the final version of the paper.
+Insufficient Dataset Validation: A reviewer noted that the paper's evaluation relied solely on the JailbreakBench dataset, questioning its effectiveness across various types of harmful content and adversarial scenarios. Authors agreed and have thus extended their evaluation to include HarmBench and StrongReject datasets; the results confirm TEMPEST's effectiveness, which they will include in the paper.
+Missing Related Work: A reviewer felt that the paper fails to discuss several key related works in multi-turn jailbreaking and red teaming, which could enhance the overall context and relevance of the research. Authors have acknowledged this and will incorporate discussions of these related works in the revised version.
+Lack of Detail in Methodology: A reviewer indicated that the paper could benefit from more detailed methodological explanations, such as providing full prompts and additional context regarding the attacker LLM. Authors addressed this concern in their rebuttal and should include these details in the final version.
+Need for In-depth Analysis: One reviewer suggested that authors should elaborate on the accumulation of minor concessions leading to fully disallowed outputs to clarify this aspect of their findings. Authors should expand on this analysis in the final version.
+Inclusion of Defense Experiments: A reviewer recommended that authors include defense experiments, such as testing against models like Llama Guard-3, to provide a comprehensive view of TEMPEST's effectiveness. Authors agreed, showed preliminary experiment, and will include a full set of defense experiments in the final version of the paper.
+Concerns Regarding Attacker LLM's Capabilities: One reviewer pointed out that the proposed method relies on a capable attacker LLM, raising concerns about its ability to generate harmful responses itself. Authors have addressed this in the rebuttal and will clarify these concerns in the final version.
+Method’s Efficiency Issues: One reviewer expressed that the efficiency of the method is a concern due to the reliance on exploring multiple jailbreaking prompts through tree search. Authors have responded by demonstrating that their method is actually more efficient than existing methods and will include this information in the next version of the paper.
+Overall Assessment: 4.0 = Conference: I think this paper could be accepted to an *ACL conference.
+Reported Issues: No
+
+--
+
+Reviewer 1:
+
+Paper Summary:
+This paper introduces TEMPEST, a novel multi-turn adversarial framework for testing the safety boundaries of Large Language Models (LLMs). Unlike single-turn jailbreaking methods, TEMPEST employs a tree search approach to systematically explore multiple conversation paths simultaneously, tracking and exploiting incremental policy breaches across dialogue turns. The method implements a cross-branch learning mechanism that shares successful attack patterns and partial compliance signals across parallel conversation paths.
+
+The authors evaluate TEMPEST on the JailbreakBench dataset, demonstrating impressive success rates: 100% on GPT-3.5-turbo and 97% on GPT-4 in a single multi-turn run. These results significantly outperform both single-turn methods and other multi-turn baselines like Crescendo and GOAT, while requiring fewer queries. The paper presents a detailed methodology, including an attacker LLM prompt structure, partial compliance tracking system, and beam search implementation for efficient exploration of attack vectors.
+
+Summary Of Strengths:
+The tree search methodology represents a significant advancement over existing techniques by exploring multiple conversation paths simultaneously rather than relying on a single dialogue thread.
+
+The framework's ability to quantify incremental safety erosion and systematically exploit minor policy breaches is particularly innovative. TEMPEST achieves impressively high success rates (97-100%) against the evaluated LLMs, outperforming existing methods.
+
+Summary Of Weaknesses:
+The evaluation is restricted to only three models (GPT-3.5-Turbo, GPT-4, and Llama-3.1-70B), omitting other important model families like Claude, Gemini, Mistral, and Qwen. This limits the generalizability of the findings and prevents analysis of how different safety training approaches might resist TEMPEST.
+
+The paper's evaluation relies solely on the JailbreakBench dataset, lacking validation on other benchmark datasets like HarmBench, AdvBench, or StrongReject. This raises questions about the method's effectiveness across different types of harmful content and adversarial scenarios.
+
+The paper fails to discuss several related works on multi-turn jailbreaking and red teaming, including but not limited to:
+
+(Yang et al., 2024) Chain of Attack: a Semantic-Driven Contextual Multi-Turn attacker for LLM
+
+(Sun et al., 2024) Multi-Turn Context Jailbreak Attack on Large Language Models From First Principles
+
+(Zhang et al., 2024) Holistic Automated Red Teaming for Large Language Models through Top-Down Test Case Generation and Multi-turn Interaction
+
+(Li et al., 2024) Uncovering Model Vulnerabilities With Multi-Turn Red Teaming
+
+Comments Suggestions And Typos:
+The authors should test TEMPEST against a wider range of models, including closed-source models like Claude and Gemini, and open-source models like Mistral and Qwen. This would provide a more comprehensive understanding of how different safety training approaches affect vulnerability to multi-turn attacks.
+
+Evaluation should be extended to include multiple benchmark datasets (e.g., HarmBench, AdvBench, StrongReject) to demonstrate that TEMPEST's effectiveness generalizes across different types of harmful content and safety scenarios.
+
+The paper would benefit from a more detailed explanation of how the partial compliance function γ(mt) is implemented and validated in practice.
+
+Confidence: 4 = Quite sure. I tried to check the important points carefully. It's unlikely, though conceivable, that I missed something that should affect my ratings.
+Soundness: 3 = Acceptable: This study provides sufficient support for its main claims. Some minor points may need extra support or details.
+Excitement: 2.5
+Overall Assessment: 2.5 = Borderline Findings
+Ethical Concerns:
+There are no concerns with this submission
+
+Needs Ethics Review: No
+Reproducibility: 3 = They could reproduce the results with some difficulty. The settings of parameters are underspecified or subjectively determined, and/or the training/evaluation data are not widely available.
+Datasets: 1 = No usable datasets submitted.
+Software: 3 = Potentially useful: Someone might find the new software useful for their work.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+
+-- 
+
+Reviewer 2:
+
+Paper Summary:
+This paper introduces TEMPEST, a framework designed to expand conversations at each turn by branching out multiple adversarial prompts that exploit partial compliance from previous responses. Through a cross-branch learning mechanism, successful attack patterns and partial compliance signals are systematically shared across parallel conversation paths. This enables a more efficient discovery of model vulnerabilities. TEMPEST highlights how minor concessions in responses can accumulate over time, eventually leading to fully disallowed outputs.
+
+Summary Of Strengths:
+The paper is well-structured and written in a clear and fluent manner.
+
+The combination of minor concessions with a tree search perspective is intriguing.
+
+TEMPEST achieves strong results on the Jailbreak Bench.
+
+Summary Of Weaknesses:
+The paper lacks details in certain aspects. For instance, in Algorithm 1, where prompts are required, it would be helpful to provide the full prompt of each component in the appendix for reference.
+
+In Table 1, it would be beneficial to present the total number of tokens required by TEMPEST, as well as details about the tree structure, such as the number of branches and nodes.
+
+The paper states that the attacker LLM used is a general "helpful-only" LLM, specifically Mixtral-7x22B (Jiang et al., 2024a), which has not been fine-tuned for red teaming. More details about the attacker LLM should be provided.
+
+The authors should include a more detailed analysis explaining why "minor concessions can accumulate into fully disallowed outputs."
+
+The paper should include some defense experiments, such as testing against Llama Guard-3 or similar models.
+
+The proposed method requires a capable attacker LLM to generate coherent adversarial prompts and reason about partial compliance. However, this raises a concern—could such an LLM directly answer these harmful queries itself?
+
+Comments Suggestions And Typos:
+The appendix should include a more detailed case study. Harmful content can be censored if necessary, but the goal is to better understand the role of the tree structure.
+
+A tree example should be included in the appendix to aid comprehension.
+
+Confidence: 5 = Positive that my evaluation is correct. I read the paper very carefully and am familiar with related work.
+Soundness: 3 = Acceptable: This study provides sufficient support for its main claims. Some minor points may need extra support or details.
+Excitement: 3 = Interesting: I might mention some points of this paper to others and/or attend its presentation in a conference if there's time.
+Overall Assessment: 3 = Findings: I think this paper could be accepted to the Findings of the ACL.
+Limitations And Societal Impact:
+The authors could discuss jailbreaking in the context of MLLM (Multimodal Large Language Models).
+
+Ethical Concerns:
+There are no concerns with this submission
+
+Reproducibility: 3 = They could reproduce the results with some difficulty. The settings of parameters are underspecified or subjectively determined, and/or the training/evaluation data are not widely available.
+Datasets: 3 = Potentially useful: Someone might find the new datasets useful for their work.
+Software: 4 = Useful: I would recommend the new software to other researchers or developers for their ongoing work.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+
+--
+
+Reviewer 3:
+
+Paper Summary:
+This paper presents TEMPEST, a multi - turn adversarial framework. It uses tree search to simulate the gradual breakdown of the security mechanisms of LLMs. The framework achieves outstanding performance in terms of attack success rates.
+
+Summary Of Strengths:
+By adopting a tree search and cross - branch learning mechanism to explore multi - turn attack paths, this approach offers a unique perspective on revealing the security vulnerabilities of LLMs.
+The methodology section is logically clear and rich in technical details.
+Summary Of Weaknesses:
+This method seems to be half-done. Apparently, a model can be learned to guide the jailbreaking direction.
+The efficiency is the weakness since it requires exploring multiple jail-breaking prompts with tree search. Using goal-oriented reward or loss would be better.
+Comments Suggestions And Typos:
+It is suggested to add an additional dicussion of exploring effective prompts leveraging RL algorithm such as MCTS.
+
+Confidence: 4 = Quite sure. I tried to check the important points carefully. It's unlikely, though conceivable, that I missed something that should affect my ratings.
+Soundness: 3.5
+Excitement: 3 = Interesting: I might mention some points of this paper to others and/or attend its presentation in a conference if there's time.
+Overall Assessment: 3 = Findings: I think this paper could be accepted to the Findings of the ACL.
+Ethical Concerns:
+There are no concerns with this submission
+
+Needs Ethics Review: No
+Reproducibility: 4 = They could mostly reproduce the results, but there may be some variation because of sample variance or minor variations in their interpretation of the protocol or method.
+Datasets: 1 = No usable datasets submitted.
+Software: 1 = No usable software released.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.

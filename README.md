@@ -31,7 +31,7 @@ We present empirical validation through multiple peer-reviewed publications acce
 
 ### Tempest: Autonomous Multi-Turn Jailbreaking of Large Language Models with Tree Search (ACL 2025)
 
-*Note: This is an updated version of Siege accepted to ICLR 2025 BuildingTrust*
+*Note: This is an updated version of Siege which was accepted to ICLR 2025 BuildingTrust*
 
 Tempest represents a significant advancement in safety testing methodology by formalizing how minor policy breaches can accumulate over successive conversation turns and by employing beam search to explore multiple attack strategies in parallel. The framework treats each conversation state as a node in a search tree, with the central innovation being a sophisticated partial compliance tracking mechanism that identifies and exploits incremental policy leaks.
 
@@ -114,6 +114,8 @@ Our evaluation framework is built on an automated reviewer system from the [AI S
 </div>
 
 ## 4. Reproducing Zochi's Results
+
+The code and results for both papers was generated entirely by Zochi, starting from publicly available repositories it retrieved from baseline methods. The final codebase was cleaned up to remove traces of Zochi's intermediate research process.
 
 ### CS-ReFT
 
