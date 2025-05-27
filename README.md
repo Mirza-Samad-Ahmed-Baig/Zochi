@@ -19,7 +19,7 @@
 
 Zochi is an artificial scientist system capable of end-to-end scientific discovery, from hypothesis generation through experimentation to peer-reviewed publication. Unlike previous systems that automate isolated aspects of scientific research, Zochi demonstrates comprehensive capabilities across the complete research lifecycle.
 
-We present empirical validation through multiple peer-reviewed publications accepted at ICLR 2025 workshops, each containing novel methodological contributions and state-of-the-art experimental results. These include Compositional Subspace Representation Fine-tuning (CS-ReFT), which achieved a 93.94% win rate on the AlpacaEval benchmark on Llama-2-7b while using only 0.0098% of model parameters, the Siege framework, a state-of-the-art jailbreak which identified critical vulnerabilities in language model safety measures through multi-turn adversarial testing.
+We present empirical validation through multiple peer-reviewed publications accepted at ICLR 2025 workshops and ACL 2025, each containing novel methodological contributions and state-of-the-art experimental results. These include Compositional Subspace Representation Fine-tuning (CS-ReFT), which achieved a 93.94% win rate on the AlpacaEval benchmark on Llama-2-7b while using only 0.0098% of model parameters, the Tempest (formerly Siege) framework, a state-of-the-art jailbreak which identified critical vulnerabilities in language model safety measures through multi-turn adversarial testing.
 
 <p align="center">
   <img width="80%" src="imgs/autoreview.png">
@@ -29,7 +29,35 @@ We present empirical validation through multiple peer-reviewed publications acce
 
 ## 2. Research Publications
 
-### CS-ReFT: Compositional Subspace Representation Fine-tuning for Adaptive Large Language Models
+### Tempest: Autonomous Multi-Turn Jailbreaking of Large Language Models with Tree Search (ACL 2025)
+
+Tempest represents a significant advancement in safety testing methodology by formalizing how minor policy breaches can accumulate over successive conversation turns and by employing beam search to explore multiple attack strategies in parallel. The framework treats each conversation state as a node in a search tree, with the central innovation being a sophisticated partial compliance tracking mechanism that identifies and exploits incremental policy leaks.
+
+#### Results
+
+<div align="center">
+
+| **Model** | **Method** | **Attempts** | **Success (%)** | **Queries** |
+|-----------|------------|--------------|-----------------|-------------|
+| GPT-3.5 | Cresendo | 1 | 40.0 | 6 |
+| GPT-4 | Cresendo | 1 | 31.7 | 6 |
+| Llama-3.1 | Crescendo | 1 | 28.0 | 6 |
+| GPT-3.5 | Cresendo | 10 | 80.4 | 60 |
+| GPT-4 | Cresendo | 10 | 70.9 | 60 |
+| Llama-3.1 | Crescendo | 10 | 77.0 | 60 |
+| GPT-3.5 | GOAT | 1 | 55.7 | 6 |
+| GPT-4 | GOAT | 1 | 46.6 | 6 |
+| Llama-3.1 | GOAT | 1 | 55.0 | 6 |
+| GPT-3.5 | GOAT | 10 | 91.6 | 60 |
+| GPT-4 | GOAT | 10 | 87.9 | 60 |
+| Llama-3.1 | GOAT | 10 | 91.0 | 60 |
+| GPT-3.5 | **Tempest** | 1 | **100.0** | 44.4 |
+| GPT-4 | **Tempest** | 1 | **97.0** | 84.2 |
+| Llama-3.1 | **Tempest** | 1 | **97.0** | 51.8 |
+
+</div>
+
+### CS-ReFT: Compositional Subspace Representation Fine-tuning for Adaptive Large Language Models (ICLR 2025 SCOPE)
 
 CS-ReFT embodies a fundamentally different paradigm compared to existing approaches. While methods like LoRA implement orthogonality constraints at the weight level, CS-ReFT applies these constraints directly to hidden-state representations. This innovation allows each task to have its dedicated subspace transformation, which eliminates interference while still enabling composition through a lightweight router mechanism. Part of codebase adapted from [ReFT](https://github.com/stanfordnlp/pyreft).
 
@@ -53,34 +81,6 @@ CS-ReFT embodies a fundamentally different paradigm compared to existing approac
 
 </div>
 
-### Siege: Autonomous Multi-Turn Jailbreaking of Large Language Models with Tree Search
-
-Siege represents a significant advancement in safety testing methodology by formalizing how minor policy breaches can accumulate over successive conversation turns and by employing beam search to explore multiple attack strategies in parallel. The framework treats each conversation state as a node in a search tree, with the central innovation being a sophisticated partial compliance tracking mechanism that identifies and exploits incremental policy leaks.
-
-#### Results
-
-<div align="center">
-
-| **Model** | **Method** | **Attempts** | **Success (%)** | **Queries** |
-|-----------|------------|--------------|-----------------|-------------|
-| GPT-3.5 | Cresendo | 1 | 40.0 | 6 |
-| GPT-4 | Cresendo | 1 | 31.7 | 6 |
-| Llama-3.1 | Crescendo | 1 | 28.0 | 6 |
-| GPT-3.5 | Cresendo | 10 | 80.4 | 60 |
-| GPT-4 | Cresendo | 10 | 70.9 | 60 |
-| Llama-3.1 | Crescendo | 10 | 77.0 | 60 |
-| GPT-3.5 | GOAT | 1 | 55.7 | 6 |
-| GPT-4 | GOAT | 1 | 46.6 | 6 |
-| Llama-3.1 | GOAT | 1 | 55.0 | 6 |
-| GPT-3.5 | GOAT | 10 | 91.6 | 60 |
-| GPT-4 | GOAT | 10 | 87.9 | 60 |
-| Llama-3.1 | GOAT | 10 | 91.0 | 60 |
-| GPT-3.5 | **Siege** | 1 | **100.0** | 44.4 |
-| GPT-4 | **Siege** | 1 | **97.0** | 84.2 |
-| Llama-3.1 | **Siege** | 1 | **97.0** | 51.8 |
-
-</div>
-
 ## 3. Automated Review Scores
 
 Our evaluation framework is built on an automated reviewer system from the [AI Scientist](https://github.com/SakanaAI/AI-Scientist) that processes research papers based on the NeurIPS conference review guidelines, assigning numerical scores for soundness, presentation, contribution, and overall quality. The scoring scale ranges from 1 to 10, with 6 representing the acceptance threshold at top machine learning conferences.
@@ -89,7 +89,7 @@ Our evaluation framework is built on an automated reviewer system from the [AI S
 
 | **System** | **Domain** | **Paper Title** | **Score** |
 |------------|------------|-----------------|-----------|
-| **Zochi** | AI Safety | Siege: Autonomous Multi-Turn Jailbreaking of Large Language Models with Tree Search | **8** |
+| **Zochi** | AI Safety | Tempest: Autonomous Multi-Turn Jailbreaking of Large Language Models with Tree Search | **8** |
 | **Zochi** | PEFT | Compositional Subspace Representation Fine-tuning for Adaptive Large Language Models | **8** |
 | **Zochi** | Bioinformatics | Protein-Nucleic Acid Binding Site Prediction with Modular Feature Fusion and E(3)-Equivariant GNNs | **7** |
 | AI Scientist v2 | Neural Networks | Compositional Regularization: Unexpected Obstacles in Enhancing Neural Network Generalization | 4 |
@@ -127,12 +127,12 @@ pip install -r requirements.txt
 python csrf_train_instruct.py --output_dir <output_dir> --run_eval
 ```
 
-### Siege
+### Tempest
 
 ```bash
-cd ../siege
+cd ../tempest
 
-# Run Siege on a target model
+# Run Tempest on a target model
 python tempest_pipeline.py --target_model <target_model> --pipeline_model <pipeline_model> --results_json <results_json>
 
 # Evaluate results
