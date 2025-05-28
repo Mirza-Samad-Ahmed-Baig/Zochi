@@ -17,6 +17,8 @@
 
 ## 1. Introduction
 
+*Note: The technical report covers an earlier version of Zochi that is semi-autonomous*
+
 Zochi is an artificial scientist system capable of end-to-end scientific discovery, from hypothesis generation through experimentation to peer-reviewed publication. Unlike previous systems that automate isolated aspects of scientific research, Zochi demonstrates comprehensive capabilities across the complete research lifecycle.
 
 We present empirical validation through multiple peer-reviewed publications accepted at ICLR 2025 workshops and ACL 2025, each containing novel methodological contributions and state-of-the-art experimental results. These include Compositional Subspace Representation Fine-tuning (CS-ReFT), which achieved a 93.94% win rate on the AlpacaEval benchmark on Llama-2-7b while using only 0.0098% of model parameters, the Tempest (formerly Siege) framework, a state-of-the-art jailbreak which identified critical vulnerabilities in language model safety measures through multi-turn adversarial testing.
