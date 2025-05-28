@@ -17,7 +17,7 @@
 
 ## 1. Introduction
 
-*Note: Updated May 27, 2025: The technical report covers an earlier version of Zochi that is semi-autonomous. Zochi’s capabilities have greatly expanded, culminating in acceptance to ACL 2025!*
+*Updated May 27, 2025: The technical report covers an earlier version of Zochi that is semi-autonomous. Zochi’s capabilities have greatly expanded, culminating in acceptance to ACL 2025!*
 
 Zochi is an artificial scientist system capable of end-to-end scientific discovery, from hypothesis generation through experimentation to peer-reviewed publication. Unlike previous systems that automate isolated aspects of scientific research, Zochi demonstrates comprehensive capabilities across the complete research lifecycle.
 
