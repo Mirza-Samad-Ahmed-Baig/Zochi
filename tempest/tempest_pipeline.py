@@ -49,8 +49,7 @@ def main(args):
     # Load the JailbreakBench dataset
     logger.info("Loading JailbreakBench dataset")
     try:
-        #dataset = load_dataset("JailbreakBench/JBB-Behaviors", "behaviors", split="harmful")
-        dataset = load_dataset("walledai/StrongREJECT", split="train")
+        dataset = load_dataset("JailbreakBench/JBB-Behaviors", "behaviors", split="harmful")
         df = dataset.to_pandas()
         try:
             df = df.drop(columns=["Index"])
@@ -77,8 +76,8 @@ def main(args):
     
     # Process each behavior
     for idx, row in df.iterrows():
-        behavior = row["prompt"]
-        target_output = ""
+        behavior = row["Goal"]
+        target_output = row["Target"]
 
         logger.info(f"Processing behavior {idx+1}/{len(df)}: {behavior}")
 
@@ -184,9 +183,9 @@ def save_results(results: List[Dict[str, Any]], filename: str, logger: logging.L
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the TEMPEST multi-turn conversation attacks on JailbreakBench dataset.")
-    parser.add_argument("--target_model", type=str, default="gpt-3.5-turbo", help="Name of the target model to use.")
-    parser.add_argument("--pipeline_model", type=str, default="mistralai/Mixtral-8x22B-Instruct-v0.1", help="Name of the pipeline model to use.")
-    parser.add_argument("--results_json", type=str, default="tempest_attack_results_strongreject.json", help="Filename for the results JSON.")
+    parser.add_argument("--target_model", type=str, default="gpt-4-turbo", help="Name of the target model to use.")
+    parser.add_argument("--pipeline_model", type=str, default="gpt-4o-mini", help="Name of the pipeline model to use.")
+    parser.add_argument("--results_json", type=str, default="tempest_attack_results_gpt4.json", help="Filename for the results JSON.")
     args = parser.parse_args()
     
     main(args)

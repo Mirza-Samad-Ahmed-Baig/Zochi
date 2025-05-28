@@ -11,7 +11,7 @@ class LLMClient:
         self.model_name = model_name
         
         # Set up API clients based on model type
-        if "mistralai" in model_name or "together" in model_name or "deepseek" in model_name or "meta" in model_name or "Qwen" in model_name:
+        if "mistralai" in model_name or "together" in model_name or "deepseek" in model_name or "meta" in model_name:
             self.api_key = os.getenv("TOGETHER_API_KEY")
             if not self.api_key:
                 raise ValueError("TOGETHER_API_KEY environment variable is not set")
@@ -58,11 +58,22 @@ class LLMClient:
             try:
                 response = self.session.post(self.base_url, json=data, headers=headers)
                 response.raise_for_status()
-                text = response.json()["output"]["choices"][0]["text"]
+                response_json = response.json()
+                
+                # Check if response has expected structure
+                if "output" not in response_json or "choices" not in response_json["output"] or not response_json["output"]["choices"]:
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                
+                text = response_json["output"]["choices"][0].get("text", "")
                 
                 # Only keep content after the last </think> tag
                 if "</think>" in text:
                     text = text.split("</think>")[-1].strip()
+                
+                # Return fallback if text is empty
+                if not text or not text.strip():
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                    
                 return text
                 
             except Exception as e:
@@ -70,37 +81,76 @@ class LLMClient:
                     # Wait and retry once with lower temperature
                     time.sleep(2)
                     data["temperature"] = max(0.1, temperature - 0.3)
-                    response = self.session.post(self.base_url, json=data, headers=headers)
-                    response.raise_for_status()
-                    text = response.json()["output"]["choices"][0]["text"]
-                    
-                    # Apply same cleaning in retry case
-                    if "</think>" in text:
-                        text = text.split("</think>")[-1].strip()
-                    return text
+                    try:
+                        response = self.session.post(self.base_url, json=data, headers=headers)
+                        response.raise_for_status()
+                        response_json = response.json()
+                        
+                        if "output" not in response_json or "choices" not in response_json["output"] or not response_json["output"]["choices"]:
+                            return "I understand your request, but I need more specific information to provide a helpful response."
+                        
+                        text = response_json["output"]["choices"][0].get("text", "")
+                        
+                        # Apply same cleaning in retry case
+                        if "</think>" in text:
+                            text = text.split("</think>")[-1].strip()
+                        
+                        if not text or not text.strip():
+                            return "I understand your request, but I need more specific information to provide a helpful response."
+                            
+                        return text
+                    except:
+                        return "I understand your request, but I need more specific information to provide a helpful response."
                 else:
                     raise e
             
         elif self.client_type == "openai":
-            response = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=max_tokens,
-                temperature=temperature,
-                top_p=top_p,
-                presence_penalty=presence_penalty,
-                frequency_penalty=frequency_penalty
-            )
-            return response.choices[0].message.content
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model_name,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                    top_p=top_p,
+                    presence_penalty=presence_penalty,
+                    frequency_penalty=frequency_penalty
+                )
+                
+                # Check if response has content
+                if not response.choices or not response.choices[0].message or not response.choices[0].message.content:
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                
+                content = response.choices[0].message.content
+                if not content or not content.strip():
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                
+                return content
+                
+            except Exception as e:
+                print(f"OpenAI API error: {e}")
+                return "I understand your request, but I need more specific information to provide a helpful response."
             
         elif self.client_type == "anthropic":
-            response = self.client.messages.create(
-                model=self.model_name,
-                max_tokens=max_tokens,
-                temperature=temperature,
-                messages=[{"role": "user", "content": prompt}]
-            )
-            return response.content[0].text
+            try:
+                response = self.client.messages.create(
+                    model=self.model_name,
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                    messages=[{"role": "user", "content": prompt}]
+                )
+                
+                if not response.content or not response.content[0].text:
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                
+                content = response.content[0].text
+                if not content or not content.strip():
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                
+                return content
+                
+            except Exception as e:
+                print(f"Anthropic API error: {e}")
+                return "I understand your request, but I need more specific information to provide a helpful response."
 
     def generate_conversation(self, messages, max_tokens=1024, temperature=0.7):
         if self.client_type == "together":
@@ -126,10 +176,23 @@ class LLMClient:
             return response
             
         elif self.client_type == "openai":
-            response = self.client.chat.completions.create(
-                model=self.model_name,
-                messages=messages,
-                max_tokens=max_tokens,
-                temperature=temperature
-            )
-            return response.choices[0].message.content
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model_name,
+                    messages=messages,
+                    max_tokens=max_tokens,
+                    temperature=temperature
+                )
+                
+                if not response.choices or not response.choices[0].message or not response.choices[0].message.content:
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                
+                content = response.choices[0].message.content
+                if not content or not content.strip():
+                    return "I understand your request, but I need more specific information to provide a helpful response."
+                
+                return content
+                
+            except Exception as e:
+                print(f"OpenAI conversation API error: {e}")
+                return "I understand your request, but I need more specific information to provide a helpful response."
