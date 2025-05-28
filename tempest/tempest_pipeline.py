@@ -184,7 +184,7 @@ def save_results(results: List[Dict[str, Any]], filename: str, logger: logging.L
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the TEMPEST multi-turn conversation attacks on JailbreakBench dataset.")
     parser.add_argument("--target_model", type=str, default="gpt-4-turbo", help="Name of the target model to use.")
-    parser.add_argument("--pipeline_model", type=str, default="gpt-4o-mini", help="Name of the pipeline model to use.")
+    parser.add_argument("--pipeline_model", type=str, default="mistralai/Mixtral-8x22B-Instruct-v0.1", help="Name of the pipeline model to use.")
     parser.add_argument("--results_json", type=str, default="tempest_attack_results_gpt4.json", help="Filename for the results JSON.")
     args = parser.parse_args()
     
