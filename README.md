@@ -17,7 +17,7 @@
 
 ## 1. Introduction
 
-*Updated May 27, 2025: The technical report and code cover an earlier version of Zochi that is semi-autonomous. Zochi’s capabilities have greatly expanded, culminating in acceptance to ACL 2025!*
+*Updated May 27, 2025: The technical report and code cover an earlier version of Zochi. Zochi’s capabilities have greatly expanded, culminating in acceptance to ACL 2025!*
 
 Zochi is an artificial scientist system capable of end-to-end scientific discovery, from hypothesis generation through experimentation to peer-reviewed publication. Unlike previous systems that automate isolated aspects of scientific research, Zochi demonstrates comprehensive capabilities across the complete research lifecycle.
 
@@ -33,7 +33,7 @@ We present empirical validation through multiple peer-reviewed publications acce
 
 ### Tempest: Autonomous Multi-Turn Jailbreaking of Large Language Models with Tree Search (ACL 2025)
 
-*Note: This is an updated version of Siege which was accepted to ICLR 2025 BuildingTrust*
+*Note: This is an updated version of Siege, which was accepted to ICLR 2025 BuildingTrust*
 
 Tempest represents a significant advancement in safety testing methodology by formalizing how minor policy breaches can accumulate over successive conversation turns and by employing beam search to explore multiple attack strategies in parallel. The framework treats each conversation state as a node in a search tree, with the central innovation being a sophisticated partial compliance tracking mechanism that identifies and exploits incremental policy leaks.
 
@@ -117,7 +117,7 @@ Our evaluation framework is built on an automated reviewer system from the [AI S
 
 ## 4. Reproducing Zochi's Results
 
-The code and results for both papers was generated entirely by Zochi, starting from publicly available repositories it retrieved from baseline methods. The final codebase was cleaned up and modified to remove traces of Zochi's intermediate research process and allow for easier reproducibility.
+Zochi generated the code and main results for both papers, starting from publicly available repositories that were retrieved from baseline methods. Some baseline results were retrieved from existing papers using the same experimental setting. The final codebase was cleaned up and modified to remove traces of Zochi's intermediate research process and allow for easier reproducibility.
 
 ### CS-ReFT
 
