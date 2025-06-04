@@ -136,7 +136,14 @@ python csrf_train_instruct.py --output_dir <output_dir> --run_eval
 ### Tempest
 
 ```bash
-cd ../tempest
+# Move back to the repository root
+cd ..
+
+# Install Tempest dependencies
+pip install -r tempest/requirements.txt
+
+# Enter the Tempest directory
+cd tempest
 
 # Run Tempest on a target model
 python tempest_pipeline.py --target_model <target_model> --pipeline_model <pipeline_model> --results_json <results_json>
