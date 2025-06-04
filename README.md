@@ -145,6 +145,19 @@ python tempest_pipeline.py --target_model <target_model> --pipeline_model <pipel
 python get_metrics.py <results_json>
 ```
 
+#### Using a Local Ollama Model
+
+If you run a model locally with [Ollama](https://github.com/ollama/ollama), prefix the
+model name with `local/` and ensure the Ollama server is running. For example:
+
+```bash
+# Use a locally hosted DeepSeek model
+python tempest_pipeline.py --target_model local/deepseek-llm-r1-8b --pipeline_model local/deepseek-llm-r1-8b --results_json results.json
+```
+
+Set the `OLLAMA_BASE_URL` environment variable if your server is not available at
+`http://localhost:11434`.
+
 ## 6. Citation
 
 ```bibtex
