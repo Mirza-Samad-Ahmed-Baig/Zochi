@@ -4,7 +4,7 @@ from perform_review import load_paper, perform_review
 
 def main(args):
     client = openai.OpenAI()
-    model = "o3-mini"
+    model = "gpt-3.5-turbo"
 
     # Load paper from PDF file (raw text)
     paper_txt = load_paper(args.pdf_path)
